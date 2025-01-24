@@ -1,0 +1,129 @@
+﻿@using System.Security.Claims
+@model StockMarketPredection.Models.User
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container">
+
+    <section class="section register min-vh-200 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 d-flex flex-column align-items-center justify-content-center">
+                    <div class="card mb-3 w-100">
+
+                        <div class="card-body">
+                            <form class="row g-3" asp-action="Profile">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+                                <div class="col-12">
+                                    <label asp-for="FirstName" class="form-label"></label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="LastName" class="form-label"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="Email" class="form-label"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="Password" class="form-label"></label>
+                                    <input asp-for="Password" class="form-control" id="password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="text-warning">*Leave it empty if you don't want to change</span>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input asp-for="Password" class="form-control" id="confirmPassword" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                @if (User.FindFirst(ClaimTypes.Email).Value != "Admin@StockMarket.com")
+                                {
+                                    <div class="col-12">
+                                        <label class="form-label">Change your interests</label><br />
+
+                                        <input type="checkbox" class="form-check-input" id="Banking" name="preferences" value="1"
+                                        @(ViewBag.PreferencesIDs.Contains(1) ? "checked" : "")>
+                                        <label class="form-check-label" for="Banking">Banking</label><br>
+
+                                        <input type="checkbox" class="form-check-input" id="Energy" name="preferences" value="2"
+                                        @(ViewBag.PreferencesIDs.Contains(2) ? "checked" : "")>
+                                        <label class="form-check-label" for="Energy">Energy</label><br>
+
+                                        <input type="checkbox" class="form-check-input" id="Telecommunications" name="preferences" value="3"
+                                        @(ViewBag.PreferencesIDs.Contains(3) ? "checked" : "")>
+                                        <label class="form-check-label" for="Telecommunications">Telecommunications</label><br>
+
+                                        <input type="checkbox" class="form-check-input" id="Industry" name="preferences" value="4"
+                                        @(ViewBag.PreferencesIDs.Contains(4) ? "checked" : "")>
+                                        <label class="form-check-label" for="Industry">Industry</label><br>
+
+                                        <input type="checkbox" class="form-check-input" id="Utilities" name="preferences" value="5"
+                                        @(ViewBag.PreferencesIDs.Contains(5) ? "checked" : "")>
+                                        <label class="form-check-label" for="Utilities">Utilities</label><br>
+                                    </div>
+                                }
+
+                                <div class="col-12">
+                                    <input type="submit" value="Save" class="btn btn-primary" id="saveBtn"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        var pass = document.getElementById('password');
+        var conPass = document.getElementById('confirmPassword');
+        var saveBtn = document.getElementById('saveBtn');
+
+        var strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+        pass.addEventListener("input", checkValue);
+        conPass.addEventListener("input", checkValue);
+
+        function checkValue() {
+            var isValidPassword = strongPasswordRegex.test(pass.value);
+
+            if (pass.value == "" && conPass.value == "") {
+                pass.style.borderColor = 'lightgrey';
+                conPass.style.borderColor = 'lightgrey';
+                saveBtn.disabled = false;
+                return; 
+            }
+
+            if (!isValidPassword) {
+                pass.style.borderColor = 'red';
+                saveBtn.disabled = true;
+                return;
+            } else {
+                pass.style.borderColor = 'green';
+            }
+
+            if (pass.value != conPass.value) {
+                conPass.style.borderColor = 'red';
+                saveBtn.disabled = true;
+            } else {
+                conPass.style.borderColor = 'green';
+                saveBtn.disabled = false;
+            }
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

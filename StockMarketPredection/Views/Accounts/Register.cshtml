@@ -1,0 +1,68 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div class="card mb-3">
+
+                        <div class="card-body">
+
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                            </div>
+
+                            <form class="row g-3" asp-action="Register" method="post">
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                                
+                                <div class="col-12">
+                                    <label asp-for="FirstName" class="form-label">First Name</label>
+                                    <input asp-for="FirstName" class="form-control">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="LastName" class="form-label">Last Name</label>
+                                    <input asp-for="LastName" class="form-control">
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Password" class="form-label">New Password</label>
+                                    <input type="password" asp-for="Password" class="form-control">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                
+
+                                <div class="col-12 text-center">
+                                    <input type="submit" class="btn btnrrsv" value="Create Account" />
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <p>Already have an account? <a asp-controller="Accounts" asp-action="Login">Login Now</a></p>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>

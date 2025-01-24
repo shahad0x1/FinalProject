@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "RegisterPreferences";
+}
+
+<div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div class="card mb-3">
+
+                        <div class="card-body">
+
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">Register Your Market Preferences</h5>
+                            </div>
+
+                            <form class="row g-3" asp-action="RegisterPreferences" method="post">
+
+                                <input type="number" value="@ViewBag.UserId" name="userId" hidden  />
+
+                                <div class="col-12">
+                                    <label class="form-label">Choose your interests</label><br />
+
+                                    <input type="checkbox" class="form-check-input" id="Banking" name="preferences" value="1">
+                                    <label class="form-check-label" for="Banking">Banking</label><br>
+                                    <input type="checkbox" class="form-check-input" id="Energy" name="preferences" value="2">
+                                    <label class="form-check-label" for="Energy">Energy</label><br>
+                                    <input type="checkbox" class="form-check-input" id="Telecommunications" name="preferences" value="3">
+                                    <label class="form-check-label" for="Telecommunications">Telecommunications</label><br>
+                                    <input type="checkbox" class="form-check-input" id="Industry" name="preferences" value="4">
+                                    <label class="form-check-label" for="Industry">Industry</label><br>
+                                    <input type="checkbox" class="form-check-input" id="Utilities" name="preferences" value="5">
+                                    <label class="form-check-label" for="Utilities">Utilities</label><br>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <input type="submit" class="btn btnrrsv" value="Submit" />
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>

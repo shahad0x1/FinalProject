@@ -1,0 +1,267 @@
+﻿@model IEnumerable<Company>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+    <div class="hero-container" data-aos="fade-up">
+        <h1>Stock Market</h1>
+        @* <span class="pixelify-sans-span">AI</span> Prediction *@
+        <a asp-controller="Market" asp-action="Index" class="btn-get-started scrollto">Get Started</a>
+    </div>
+</section><!-- End Hero -->
+
+<!-- ======= Markets Section ======= -->
+<section class="market">
+    <div class="container">
+
+        <div class="section-title" data-aos="zoom-in">
+            <h2>Top Saudi Companies</h2>
+        </div>
+
+        <div class="row mt-4 equal-height">
+            <div class="col-xl-4 col-lg-5 col-md-4">
+                <div class="list-group">
+                    @foreach (var company in Model)
+                    {
+                        <button type="button" value="@company.Symbol" class="list-group-item list-group-item-action" aria-current="true"><i class="fas @company.Category.FaClass me-4"></i>@company.Name</button>
+                    }
+                </div>
+                @* <div class="list-group">
+                    <button type="button" value="1120" class="list-group-item list-group-item-action active" aria-current="true"><i class="fas fa-university"></i> Al Rajhi Bank</button>
+                    <button type="button" value="2222" class="list-group-item list-group-item-action"><i class="fas fa-oil-can"></i> Saudi Aramco</button>
+                    <button type="button" value="2010" class="list-group-item list-group-item-action"><i class="fas fa-industry"></i> Saudi Basic Industries Corporation (SABIC)</button>
+                    <button type="button" value="1150" class="list-group-item list-group-item-action"><i class="fas fa-university"></i> Alinma Bank</button>
+                    <button type="button" value="7010" class="list-group-item list-group-item-action"><i class="fas fa-signal"></i> Saudi Telecom Company (STC)</button>
+                    <button type="button" value="1180" class="list-group-item list-group-item-action"><i class="fas fa-university"></i> National Commercial Bank (NCB)</button>
+                    <button type="button" value="5110" class="list-group-item list-group-item-action"><i class="fas fa-bolt"></i> Saudi Electricity Company (SEC)</button>
+                    <button type="button" value="1010" class="list-group-item list-group-item-action"><i class="fas fa-university"></i> Riyad Bank</button>
+                    <button type="button" value="1080" class="list-group-item list-group-item-action"><i class="fas fa-university"></i> Arab National Bank</button>
+                    <button type="button" value="1050" class="list-group-item list-group-item-action"><i class="fas fa-university"></i> Banque Saudi Fransi</button>
+                </div> *@
+            </div>
+
+            <div class="col-xl-8 col-lg-7 col-md-8 d-grid align-items-center">
+                <div class="card shadow">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" id="chartHeader">@Model.First().Name - market from a month ago</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="home-chart" style="height:345px;"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section><!-- End Markets Section -->
+
+<!-- ======= About Section ======= -->
+<section id="about" class="about">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 video-box d-flex justify-content-center align-items-center" data-aos="zoom-in">
+                <img src="~/img/About.png" class="img-fluid" style="max-height: 50%;" />
+            </div>
+
+            <div class="col-xl-6 col-lg-6 d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+                <div class="box-heading" data-aos="fade-up">
+                    <h4>About My Project</h4>
+
+                    <p>
+                        With My project, I  dedicated to revolutionizing the way investors navigate the financial markets. Utilizing cutting-edge artificial intelligence and data analysis, I provide accurate and timely predictions to help our clients make informed investment decisions. my mission is to empower both novice and seasoned investors with the tools and insights they need to succeed in a fast-paced, ever-changing market. With a commitment to transparency, innovation, and excellence, My project stands at the forefront of financial technology, guiding our clients toward a prosperous future.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section><!-- End About Section -->
+<!-- ======= Team Section ======= -->
+<section id="team" class="team">
+
+    <div class="container">
+
+        <div class="section-title" data-aos="zoom-in">
+            <h2>Meet Me !</h2>
+        </div>
+
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-3">
+              
+            </div>
+           
+            </div>
+            <div class="col-3">
+                <div class="team-card">
+                    <img src="~/img/woman (5).png" alt="Member 3" class="team-img">
+                    <h3>Shahad Abdullah</h3>
+                    
+                </div>
+            </div>
+           
+            </div>
+            
+      
+</section><!-- End Team Section -->
+
+@section Scripts {
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/chart-area-demo.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const buttons = document.querySelectorAll('.list-group-item-action');
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const symbol = button.value;
+                    reloadMarket(symbol);
+
+                    const chartHeader = document.getElementById('chartHeader');
+                    chartHeader.textContent = this.textContent + " - market from a month ago";
+                });
+            });
+            reloadMarket(@Model.First().Symbol);
+        });
+
+        let top10MarketAreaChart;
+
+        async function reloadMarket(symbol) {
+            var url = "/ChartData/GetTop10Markets?symbol="+ symbol +".SR";
+
+            var homeChart = document.getElementById("home-chart");
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                var labels = data.map(item => item.date);
+                var prices = data.map(item => item.closePrice);
+
+                if (top10MarketAreaChart) {
+                    top10MarketAreaChart.destroy();
+                }
+
+                const maxPrice = Math.max(...prices);
+
+                top10MarketAreaChart = new Chart(homeChart, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Close Price",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(78, 115, 223, 0.05)",
+                            borderColor: "rgba(78, 115, 223, 1)",
+                            pointRadius: 3,
+                            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                            pointBorderColor: "rgba(78, 115, 223, 1)",
+                            pointHoverRadius: 2,
+                            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                            pointHitRadius: 10,
+                            pointBorderWidth: 2,
+                            data: prices,
+                        }],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 25,
+                                top: 25,
+                                bottom: 0
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'day'
+                                },
+                                gridLines: {
+                                    display: false,
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 31
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    max: Math.ceil(maxPrice / 10) * 10,
+                                    maxTicksLimit: 5,
+                                    padding: 10,
+                                    callback: function (value, index, values) {
+                                        return value;
+                                    }
+                                },
+                                gridLines: {
+                                    color: "rgb(234, 236, 244)",
+                                    zeroLineColor: "rgb(234, 236, 244)",
+                                    drawBorder: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            backgroundColor: "rgb(255,255,255)",
+                            bodyFontColor: "#858796",
+                            titleMarginBottom: 10,
+                            titleFontColor: '#6e707e',
+                            titleFontSize: 14,
+                            borderColor: '#dddfeb',
+                            borderWidth: 1,
+                            xPadding: 15,
+                            yPadding: 15,
+                            displayColors: false,
+                            intersect: false,
+                            mode: 'index',
+                            caretPadding: 10,
+                            callbacks: {
+                                label: function (tooltipItem, chart) {
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ': ' + tooltipItem.yLabel;
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching market data:', error);
+            }
+        }
+    </script>
+}

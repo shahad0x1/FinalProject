@@ -1,0 +1,15 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container">
+
+    <h1 class="text-danger mt-4">Error.</h1>
+
+    @if (Model.ShowRequestId)
+    {
+        <h2 class="text-danger">@Model.RequestId.</h2>
+    }
+
+</div>

@@ -1,0 +1,244 @@
+﻿@model IEnumerable<Company>
+
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        @if (Model.Any())
+        {
+            <!-- Begin Page Content -->
+            <div class="container">
+
+                <div class="row my-4">
+
+                    <!-- Companies List -->
+                    <div class="col-xl-4 col-lg-5 col-md-4">
+                        <div class="list-group">
+                            @foreach (var company in Model)
+                            {
+                                <button type="button" value="@company.Symbol" class="list-group-item list-group-item-action" aria-current="true"><i class="fas @company.Category.FaClass me-4"></i>@company.Name</button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Line Chart -->
+                    <div class="col-xl-8 col-lg-7 col-md-8 d-grid align-items-center">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary" id="chartHeader">@Model.First().Name - market from a month ago</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="home-chart" style="height:345px;"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-2" style="border:solid">
+                    <div class="section-title mt-4" data-aos="zoom-in">
+                        <h6>Choose a company from the list then click the "Predict" button to generate a market forecast for the selected company.</h6>
+                    </div>
+                    <div class="text-center my-4">
+                        @* <a asp-controller="Market" asp-action="Index" class="btn-main">Predict</a> *@
+                        <a onclick="predict()" class="btn-main" style="cursor:pointer">Predict</a>
+                    </div>
+                </div>
+
+                <div id="predictedChart" hidden class="row">
+
+                    <!-- Bar Chart -->
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Predicted market for the upcoming 10 days</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-bar">
+                                    <canvas id="PredictedMarketBar" style="height:250px;"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row text-center my-4">
+                    <h1 class="text-danger">You should choose preferences to analyze.</h1>
+                    <h3 class="text-danger">You can edit your preferences in profile page.</h3>
+                </div>
+            </div>
+        }
+
+    </div>
+    <!-- End of Main Content -->
+
+</div>
+
+@section Scripts {
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/chart-bar-demo.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // const predictedChart = document.getElementById("predictedChart");
+            // predictedChart.style.display = 'none';
+
+            const buttons = document.querySelectorAll('.list-group-item-action');
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const symbol = button.value;
+                    reloadMarket(symbol);
+
+                    const chartHeader = document.getElementById('chartHeader');
+                    chartHeader.textContent = this.textContent + " - market from a month ago";
+                });
+            });
+            reloadMarket(@Model.First().Symbol);
+        });
+
+        let top10MarketAreaChart;
+
+        async function reloadMarket(symbol) {
+            var url = "/ChartData/GetTop10Markets?symbol=" + symbol + ".SR";
+
+            var homeChart = document.getElementById("home-chart");
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                var labels = data.map(item => item.date);
+                var prices = data.map(item => item.closePrice);
+
+                if (top10MarketAreaChart) {
+                    top10MarketAreaChart.destroy();
+                }
+
+                const maxPrice = Math.max(...prices);
+
+                top10MarketAreaChart = new Chart(homeChart, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Close Price",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(78, 115, 223, 0.05)",
+                            borderColor: "rgba(78, 115, 223, 1)",
+                            pointRadius: 3,
+                            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                            pointBorderColor: "rgba(78, 115, 223, 1)",
+                            pointHoverRadius: 2,
+                            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                            pointHitRadius: 10,
+                            pointBorderWidth: 2,
+                            data: prices,
+                        }],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 25,
+                                top: 25,
+                                bottom: 0
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'day'
+                                },
+                                gridLines: {
+                                    display: false,
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 31
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    max: Math.ceil(maxPrice / 10) * 10,
+                                    maxTicksLimit: 5,
+                                    padding: 10,
+                                    callback: function (value, index, values) {
+                                        return value;
+                                    }
+                                },
+                                gridLines: {
+                                    color: "rgb(234, 236, 244)",
+                                    zeroLineColor: "rgb(234, 236, 244)",
+                                    drawBorder: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            backgroundColor: "rgb(255,255,255)",
+                            bodyFontColor: "#858796",
+                            titleMarginBottom: 10,
+                            titleFontColor: '#6e707e',
+                            titleFontSize: 14,
+                            borderColor: '#dddfeb',
+                            borderWidth: 1,
+                            xPadding: 15,
+                            yPadding: 15,
+                            displayColors: false,
+                            intersect: false,
+                            mode: 'index',
+                            caretPadding: 10,
+                            callbacks: {
+                                label: function (tooltipItem, chart) {
+                                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ': ' + tooltipItem.yLabel;
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching market data:', error);
+            }
+        }
+    </script>
+
+}
