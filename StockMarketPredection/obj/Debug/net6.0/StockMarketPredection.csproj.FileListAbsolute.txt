@@ -564,3 +564,4 @@ C:\Users\sun com\Desktop\StockMarketPredection\StockMarketPredection\obj\Debug\n
 C:\Users\sun com\Desktop\StockMarketPredection\StockMarketPredection\obj\Debug\net6.0\StockMarketPredection.pdb
 C:\Users\sun com\Desktop\StockMarketPredection\StockMarketPredection\obj\Debug\net6.0\StockMarketPredection.genruntimeconfig.cache
 C:\Users\sun com\Desktop\StockMarketPredection\StockMarketPredection\obj\Debug\net6.0\ref\StockMarketPredection.dll
+C:\Users\sun com\Desktop\StockMarketPredection\StockMarketPredection\obj\Debug\net6.0\StockMarketPredection.sourcelink.json

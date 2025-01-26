@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StockMarketPredection")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad782de042cda40f252b6299e2b3ee2b31faa84d")]
 [assembly: System.Reflection.AssemblyProductAttribute("StockMarketPredection")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StockMarketPredection")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
